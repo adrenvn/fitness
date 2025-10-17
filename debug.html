@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Admin</title>
+  <style>
+    body { font-family: monospace; padding: 20px; }
+    .log { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+    .error { background: #ffebee; }
+    .success { background: #e8f5e9; }
+    .info { background: #e3f2fd; }
+  </style>
+</head>
+<body>
+  <h1>Admin Panel Debug</h1>
+  <button id="test">Test Login</button>
+  <div id="logs"></div>
+
+  <script type="module">
+    const logs = document.getElementById('logs');
+
+    function log(message, type = 'info') {
+      const div = document.createElement('div');
+      div.className = `log ${type}`;
+      div.textContent = new Date().toLocaleTimeString() + ' - ' + message;
+      logs.appendChild(div);
+      console.log(message);
+    }
+
+    document.getElementById('test').addEventListener('click', async () => {
+      logs.innerHTML = '';
+
+      try {
+        log('Step 1: Checking env variables...');
+        log(`VITE_SUPABASE_URL: ${import.meta.env.VITE_SUPABASE_URL}`);
+        log(`VITE_SUPABASE_ANON_KEY: ${import.meta.env.VITE_SUPABASE_ANON_KEY ? 'SET' : 'NOT SET'}`);
+
+        if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+          log('ERROR: Environment variables not set!', 'error');
+          return;
+        }
+
+        log('Step 2: Importing Supabase client...');
+        const { supabase } = await import('./lib/supabase.js');
+        log('Supabase client imported successfully', 'success');
+
+        log('Step 3: Testing database connection...');
+        const { data: testData, error: testError } = await supabase
+          .from('admin_users')
+          .select('count');
+
+        if (testError) {
+          log(`Database connection error: ${JSON.stringify(testError)}`, 'error');
+          return;
+        }
+
+        log('Database connection successful', 'success');
+
+        log('Step 4: Attempting login...');
+        const username = 'Admin';
+        const password = '34845';
+
+        const { data, error } = await supabase
+          .from('admin_users')
+          .select('*')
+          .eq('username', username)
+          .eq('password_hash', password)
+          .maybeSingle();
+
+        if (error) {
+          log(`Login query error: ${JSON.stringify(error)}`, 'error');
+          return;
+        }
+
+        if (!data) {
+          log('No user found with these credentials', 'error');
+          return;
+        }
+
+        log(`Login successful! User: ${JSON.stringify(data)}`, 'success');
+
+        log('Step 5: Testing auth module...');
+        const { auth } = await import('./lib/api.js');
+
+        try {
+          const user = await auth.signIn(username, password);
+          log(`Auth module login successful! User: ${JSON.stringify(user)}`, 'success');
+        } catch (authError) {
+          log(`Auth module error: ${authError.message}`, 'error');
+        }
+
+      } catch (err) {
+        log(`Exception: ${err.message}`, 'error');
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
