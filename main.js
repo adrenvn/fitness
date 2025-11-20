@@ -207,18 +207,7 @@ class Slider {
   }
 
   lazyLoadVideos() {
-    const visibleStart = this.currentIndex;
-    const visibleEnd = this.currentIndex + this.slidesPerView;
 
-    this.slides.forEach((slide, index) => {
-      if (index >= visibleStart - 1 && index <= visibleEnd) {
-        const iframe = slide.querySelector('iframe[data-src]');
-        if (iframe) {
-          iframe.src = iframe.dataset.src;
-          iframe.removeAttribute('data-src');
-        }
-      }
-    });
   }
 
   handleResize() {
@@ -601,10 +590,10 @@ function updateReviewsSection(content, reviews) {
       return `
         <div class="reviews__video card">
           <iframe
+            data-src="${embedUrl}"
             width="100%"
             height="315"
             style="background-color: #000"
-            src="${embedUrl}"
             frameborder="0"
             allowfullscreen="1"
             allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock"
@@ -771,10 +760,32 @@ function initVideoInteractions() {
     const iframe = container.querySelector('iframe');
     if (!iframe) return;
 
+    let isLoaded = false;
     let isPlaying = false;
+
+    const loadVideo = () => {
+      if (!isLoaded) {
+        const dataSrc = iframe.getAttribute('data-src');
+        if (dataSrc) {
+          iframe.src = dataSrc;
+          iframe.removeAttribute('data-src');
+          isLoaded = true;
+        } else if (iframe.src) {
+          isLoaded = true;
+        }
+      }
+    };
 
     if (isTouchDevice) {
       container.addEventListener('click', (e) => {
+        if (!isLoaded) {
+          loadVideo();
+          const separator = iframe.src.includes('?') ? '&' : '?';
+          iframe.src = iframe.src + separator + 'autoplay=1';
+          isPlaying = true;
+          return;
+        }
+
         if (e.target === iframe) return;
 
         const src = iframe.src;
@@ -792,6 +803,16 @@ function initVideoInteractions() {
       });
     } else {
       container.addEventListener('mouseenter', () => {
+        if (!isLoaded) {
+          loadVideo();
+          setTimeout(() => {
+            const separator = iframe.src.includes('?') ? '&' : '?';
+            iframe.src = iframe.src + separator + 'autoplay=1&mute=1';
+            isPlaying = true;
+          }, 100);
+          return;
+        }
+
         const src = iframe.src;
         if (!src || isPlaying) return;
 
