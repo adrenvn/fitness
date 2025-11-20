@@ -763,37 +763,88 @@ function showDocumentsModal(documents) {
   });
 }
 
-function initFullscreenButtons() {
-  document.addEventListener('click', (e) => {
-    if (e.target.closest('.video__fullscreen-btn')) {
-      e.preventDefault();
-      const btn = e.target.closest('.video__fullscreen-btn');
-      const videoContainer = btn.closest('.teacher__video, .reviews__video');
+function initVideoInteractions() {
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const videoContainers = document.querySelectorAll('.teacher__video, .reviews__video');
 
-      if (videoContainer) {
-        if (!document.fullscreenElement) {
-          videoContainer.requestFullscreen().catch(err => {
-            console.error('Ошибка при входе в полноэкранный режим:', err);
-          });
+  videoContainers.forEach(container => {
+    const iframe = container.querySelector('iframe');
+    if (!iframe) return;
+
+    let isPlaying = false;
+
+    if (isTouchDevice) {
+      container.addEventListener('click', (e) => {
+        if (e.target === iframe) return;
+
+        const src = iframe.src;
+        if (!src) return;
+
+        if (isPlaying) {
+          const newSrc = src.split('?')[0];
+          iframe.src = newSrc;
+          isPlaying = false;
         } else {
-          document.exitFullscreen();
+          const separator = src.includes('?') ? '&' : '?';
+          iframe.src = src + separator + 'autoplay=1';
+          isPlaying = true;
         }
-      }
-    }
-  });
-
-  document.addEventListener('fullscreenchange', () => {
-    const fullscreenBtns = document.querySelectorAll('.video__fullscreen-btn svg');
-
-    if (document.fullscreenElement) {
-      fullscreenBtns.forEach(svg => {
-        svg.innerHTML = '<path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>';
       });
     } else {
-      fullscreenBtns.forEach(svg => {
-        svg.innerHTML = '<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>';
+      container.addEventListener('mouseenter', () => {
+        const src = iframe.src;
+        if (!src || isPlaying) return;
+
+        const separator = src.includes('?') ? '&' : '?';
+        iframe.src = src + separator + 'autoplay=1&mute=1';
+        isPlaying = true;
+      });
+
+      container.addEventListener('mouseleave', () => {
+        if (!isPlaying) return;
+
+        const src = iframe.src;
+        if (!src) return;
+
+        const newSrc = src.split('?')[0];
+        iframe.src = newSrc;
+        isPlaying = false;
       });
     }
+  });
+}
+
+function initFAQ() {
+  const faqItems = document.querySelectorAll('.faq__item');
+
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq__question');
+
+    question.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('is-open');
+          otherItem.querySelector('.faq__question').setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      if (isOpen) {
+        item.classList.remove('is-open');
+        question.setAttribute('aria-expanded', 'false');
+      } else {
+        item.classList.add('is-open');
+        question.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    question.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        question.click();
+      }
+    });
   });
 }
 
@@ -804,7 +855,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initParallax();
   initButtonRipple();
   initSmoothScroll();
-  initFullscreenButtons();
+  initVideoInteractions();
+  initFAQ();
 
   document.querySelectorAll('.card').forEach(card => {
     if (prefersReducedMotion) return;
