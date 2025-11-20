@@ -183,6 +183,7 @@ body {
 }
 
 .hero__subtitle li {
+  display: block;
   position: relative;
   padding-left: 32px;
   margin-bottom: 12px;
