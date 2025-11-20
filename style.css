@@ -283,6 +283,11 @@ body {
   box-shadow: 0 12px 32px rgba(124, 58, 237, 0.5);
 }
 
+.btn--primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+}
+
 .btn--primary .btn__icon {
   transition: transform 0.3s ease;
 }
@@ -322,6 +327,11 @@ body {
   box-shadow: 0 8px 24px rgba(37, 211, 102, 0.3);
 }
 
+.btn--whatsapp:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+}
+
 .btn--telegram {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
@@ -351,6 +361,11 @@ body {
   border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(42, 171, 238, 0.3);
+}
+
+.btn--telegram:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(42, 171, 238, 0.2);
 }
 
 .btn:focus-visible {
@@ -1058,6 +1073,14 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: var(--spacing-md);
   }
+
+  .useful__card {
+    max-width: 350px;
+  }
+
+  .program__grid {
+    gap: var(--spacing-md);
+  }
 }
 
 @media (max-width: 768px) {
@@ -1068,6 +1091,29 @@ body {
 
   .reviews__video {
     border-radius: var(--radius-md);
+  }
+
+  .useful__card {
+    max-width: 100%;
+    padding: var(--spacing-lg);
+  }
+
+  .useful__icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .useful__icon svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .useful__title {
+    font-size: 1.25rem;
+  }
+
+  .useful__text {
+    font-size: 0.9375rem;
   }
 }
 

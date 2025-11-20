@@ -488,9 +488,25 @@ body {
 }
 
 @media (max-width: 768px) {
+  .login-card {
+    padding: var(--spacing-lg);
+    max-width: 100%;
+  }
+
+  .login-title {
+    font-size: 20px;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    font-size: 16px;
+  }
+
   .sidebar {
     position: fixed;
     z-index: 100;
+    width: 280px;
     transform: translateX(-100%);
     transition: transform 0.3s;
   }
@@ -501,5 +517,35 @@ body {
 
   .content {
     padding: var(--spacing-md);
+    margin-left: 0;
+  }
+
+  .section-content {
+    padding: var(--spacing-md);
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .list-item-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .notification {
+    right: var(--spacing-sm);
+    left: var(--spacing-sm);
+  }
+
+  .notification-content {
+    min-width: auto;
+    width: 100%;
   }
 }
