@@ -10,8 +10,8 @@
   --color-purple: #7c3aed;
   --color-blue: #3b82f6;
 
-  --font-heading: 'Montserrat', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
 
   --spacing-xs: 8px;
   --spacing-sm: 16px;
@@ -105,24 +105,24 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  width: 55%;
+  width: 70%;
   height: 100%;
-  background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-blue) 100%);
-  border-radius: 50% 0 0 50% / 30% 0 0 30%;
+  background: var(--color-white);
+  border-radius: 50% 0 0 50% / 40% 0 0 40%;
   z-index: 1;
 }
 
 .hero__image {
   position: absolute;
-  bottom: 0;
-  right: 8%;
-  width: 380px;
-  height: 550px;
-  background: url('https://images.pexels.com/photos/416778/pexels-photo-416778.jpeg?auto=compress&cs=tinysrgb&w=800') no-repeat center;
-  background-size: cover;
-  border-radius: 50% 50% var(--radius-lg) var(--radius-lg);
+  top: 50%;
+  right: 10%;
+  transform: translateY(-50%);
+  width: 600px;
+  height: 400px;
+  background: url('/image.png') no-repeat center;
+  background-size: contain;
   z-index: 2;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 32px;
 }
 
 .hero__logo {
@@ -165,19 +165,43 @@ body {
 .hero__title {
   font-family: var(--font-heading);
   font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 900;
+  font-weight: 800;
   line-height: 1.1;
   color: var(--color-text-light);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 .hero__subtitle {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-xl) 0;
   font-size: clamp(1.125rem, 2.5vw, 1.5rem);
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: var(--spacing-xl);
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+.hero__subtitle li {
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 12px;
+}
+
+.hero__subtitle li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.4);
+}
+
+.hero__subtitle li:last-child {
+  margin-bottom: 0;
 }
 
 .hero__actions {
@@ -849,25 +873,13 @@ body {
 
 @media (max-width: 1023px) {
   .hero__image {
-    width: 300px;
-    height: 450px;
+    width: 450px;
+    height: 300px;
     right: 5%;
   }
 
   .hero__background {
-    width: 50%;
-  }
-
-  .hero__shape {
-    width: 240px;
-    height: 160px;
-    left: 40px;
-    bottom: 40px;
-  }
-
-  .hero__cta-button {
-    padding: 14px 20px;
-    font-size: 0.9rem;
+    width: 60%;
   }
 
   .reviews__grid {
@@ -1038,14 +1050,15 @@ body {
   }
 
   .hero__image {
-    width: 170px;
-    height: 210px;
+    width: 280px;
+    height: 190px;
     left: 50%;
     transform: translateX(-50%);
     top: 160px;
     right: auto;
     bottom: auto;
     z-index: 3;
+    padding: 16px;
   }
 
   .hero__background {
@@ -1186,9 +1199,10 @@ body {
   }
 
   .hero__image {
-    width: 160px;
-    height: 200px;
+    width: 260px;
+    height: 180px;
     top: 150px;
+    padding: 12px;
   }
 
   .hero__background {
@@ -1214,9 +1228,10 @@ body {
   }
 
   .hero__image {
-    width: 150px;
-    height: 190px;
+    width: 240px;
+    height: 170px;
     top: 140px;
+    padding: 12px;
   }
 
   .hero__background {
