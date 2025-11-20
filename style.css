@@ -164,9 +164,9 @@ body {
 
 .hero__title {
   font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-size: clamp(1.5rem, 5vw, 4.5rem);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.2;
   color: var(--color-text-light);
   margin-bottom: var(--spacing-lg);
   text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
@@ -1310,8 +1310,7 @@ body {
   }
 
   .hero__title {
-    font-size: 2rem;
-    line-height: 1.2;
+    line-height: 1.25;
     margin-bottom: var(--spacing-md);
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
   }
@@ -1434,9 +1433,6 @@ body {
     padding: var(--spacing-md);
   }
 
-  .hero__title {
-    font-size: 1.75rem;
-  }
 }
 
 @media (max-width: 375px) {
@@ -1463,10 +1459,6 @@ body {
     padding: var(--spacing-md) var(--spacing-sm);
     margin-left: var(--spacing-sm);
     margin-right: var(--spacing-sm);
-  }
-
-  .hero__title {
-    font-size: 1.625rem;
   }
 
   .hero__subtitle {
