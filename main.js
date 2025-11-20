@@ -336,10 +336,12 @@ async function loadContent() {
     updateContactsSection(content, contacts);
     updateFooter(content);
 
-    const sliderElement = document.querySelector('.slider');
-    if (sliderElement) {
-      new Slider(sliderElement);
-    }
+    setTimeout(() => {
+      const sliderElement = document.querySelector('.slider');
+      if (sliderElement) {
+        new Slider(sliderElement);
+      }
+    }, 100);
   } catch (error) {
     console.error('Error loading content:', error);
   }
