@@ -1290,9 +1290,7 @@ function showDocumentModal(document = null) {
           return;
         }
 
-        console.log('Uploading file:', selectedFile.name, selectedFile.size);
         const uploadResult = await api.uploadDocument(selectedFile);
-        console.log('Upload result:', uploadResult);
 
         if (!uploadResult || !uploadResult.publicUrl) {
           throw new Error('Не удалось получить URL загруженного файла');
@@ -1305,7 +1303,6 @@ function showDocumentModal(document = null) {
           order_index: parseInt(formData.get('order_index'))
         };
 
-        console.log('Creating document with data:', docData);
         await api.createDocument(docData);
         showNotification('Документ добавлен', 'success');
       }
@@ -1327,23 +1324,12 @@ function setupDocumentUpload(areaId, inputId, previewId, onFileSelect) {
     const preview = document.getElementById(previewId);
 
     if (!uploadArea || !fileInput || !preview) {
-      console.error('Upload elements not found:', {
-        areaId,
-        inputId,
-        previewId,
-        uploadArea: !!uploadArea,
-        fileInput: !!fileInput,
-        preview: !!preview
-      });
       return;
     }
-
-    console.log('Setting up document upload handlers');
 
     uploadArea.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      console.log('Upload area clicked');
       fileInput.click();
     });
 
@@ -1368,14 +1354,12 @@ function setupDocumentUpload(areaId, inputId, previewId, onFileSelect) {
 
     fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
-      console.log('File selected:', file);
       if (file) {
         handleFileSelect(file);
       }
     });
 
     function handleFileSelect(file) {
-      console.log('Handling file:', file.name, file.type, file.size);
       preview.innerHTML = `
         <div class="preview-item">
           <div style="padding: 20px; text-align: center;">

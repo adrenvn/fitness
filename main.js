@@ -419,7 +419,6 @@ function extractVkEmbedUrl(input) {
   if (input.includes('<iframe')) {
     const srcMatch = input.match(/src=["']([^"']+)["']/i);
     if (srcMatch) {
-      console.log('[VK Video] Extracted src from iframe:', srcMatch[1]);
       return srcMatch[1];
     }
   }
@@ -444,9 +443,6 @@ function parseVkVideoUrl(url) {
 
   // Проверяем что это embed URL от VK
   if (!url.includes('video_ext.php')) {
-    console.error('[VK Video] Invalid format. URL must contain video_ext.php');
-    console.error('[VK Video] Example: https://vkvideo.ru/video_ext.php?oid=-157301945&id=456239025&hash=0998d1d02641da56');
-    console.error('[VK Video] Provided:', url);
     return null;
   }
 
@@ -458,12 +454,7 @@ function parseVkVideoUrl(url) {
 
     // Проверяем обязательные параметры
     if (!oid || !id) {
-      console.error('[VK Video] Missing required parameters (oid or id)');
       return null;
-    }
-
-    if (!hash) {
-      console.warn('[VK Video] Missing hash parameter - video may not work');
     }
 
     // Добавляем hd=2 если отсутствует для лучшего качества
@@ -473,11 +464,9 @@ function parseVkVideoUrl(url) {
     }
 
     const finalUrl = urlObj.toString();
-    console.log('[VK Video] Embed URL ready:', finalUrl);
     return finalUrl;
 
   } catch (e) {
-    console.error('[VK Video] Error parsing URL:', e);
     return null;
   }
 }
